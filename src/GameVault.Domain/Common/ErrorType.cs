@@ -1,4 +1,4 @@
-namespace  GameVault.Domain.Common;
+namespace GameVault.Domain.Common;
 
 /// <summary>
 /// Categorización de los errores de negocio para su correcto mapeo a estados HTTP.

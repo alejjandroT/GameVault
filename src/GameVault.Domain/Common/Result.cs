@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace  GameVault.Domain.Common;
+namespace GameVault.Domain.Common;
 
 /// <summary>
 /// Representa el resultado de una operación que no devuelve valor.

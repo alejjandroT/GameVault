@@ -10,19 +10,24 @@ public class JuegosEndpoints : IEndpoint
     [
         new(
             Id: 1,
-            Nombre: "Dayz Gone",
-            Categoria: "Aventura",
-            NumeroLicencia: "Dayz-12345",
-            Email: "sofia.ramirez@gamevault.com",
-            Activo: true
+            Titulo: "The Legend of Zelda: Breath of the Wild",
+            Genero: "Aventura",
+            Precio: 59.99m,
+            Publicado: true
         ),
         new(
             Id: 2,
-            Nombre: "The Last of Us",
-            Categoria: "Aventura",
-            NumeroLicencia: "Last-67890",
-            Email: "andres.castro@gamevault.com",
-            Activo: true
+            Titulo: "Cyberpunk 2077",
+            Genero: "RPG",
+            Precio: 49.99m,
+            Publicado: true
+        ),
+        new(
+            Id: 3,
+            Titulo: "Hades",
+            Genero: "Indie",
+            Precio: 24.99m,
+            Publicado: true
         )
     ];
 
@@ -68,20 +73,20 @@ public class JuegosEndpoints : IEndpoint
 
     private static IResult CrearJuego(CrearJuegoRequest request)
     {
-        if (string.IsNullOrWhiteSpace(request.Nombre) || string.IsNullOrWhiteSpace(request.NumeroLicencia))
+        if (string.IsNullOrWhiteSpace(request.Titulo) || string.IsNullOrWhiteSpace(request.Genero) || request.Precio <= 0)
         {
             Result<JuegoResponse> validationResult = Error.Validation(
                 "Juego.Validacion",
-                "El nombre y el número de licencia son campos obligatorios.");
+                "El título, el género y el precio son campos obligatorios.");
 
             return validationResult.ToHttpResult();
         }
 
-        if (JuegosDb.Any(j => j.NumeroLicencia.Equals(request.NumeroLicencia, StringComparison.OrdinalIgnoreCase)))
+        if (JuegosDb.Any(j => j.Titulo.Equals(request.Titulo, StringComparison.OrdinalIgnoreCase)))
         {
             Result<JuegoResponse> conflictResult = Error.Conflict(
-                "Juego.LicenciaDuplicada",
-                $"Ya existe un juego registrado con el número de licencia '{request.NumeroLicencia}'.");
+                "Juego.TituloDuplicado",
+                $"Ya existe un juego registrado con el título '{request.Titulo}'.");
 
             return conflictResult.ToHttpResult();
         }
@@ -90,11 +95,10 @@ public class JuegosEndpoints : IEndpoint
 
         var nuevoJuego = new JuegoResponse(
             Id: nuevoId,
-            Nombre: request.Nombre.Trim(),
-            Categoria: request.Categoria.Trim(),
-            NumeroLicencia: request.NumeroLicencia.Trim(),
-            Email: request.Email.Trim(),
-            Activo: true
+            Titulo: request.Titulo.Trim(),
+            Genero: request.Genero.Trim(),
+            Precio: request.Precio,
+            Publicado: true
         );
 
         JuegosDb.Add(nuevoJuego);

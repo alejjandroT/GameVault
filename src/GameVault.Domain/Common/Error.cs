@@ -1,4 +1,4 @@
-namespace  GameVault.Domain.Common;
+namespace GameVault.Domain.Common;
 
 /// <summary>
 /// Representa un error de negocio estructurado.
