@@ -1,0 +1,17 @@
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Infrastructure.deps.json
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Infrastructure.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Infrastructure.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Application.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Domain.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Domain.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/bin/Debug/net10.0/GameVault.Application.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.csproj.AssemblyReference.cache
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.AssemblyInfoInputs.cache
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.AssemblyInfo.cs
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.csproj.CoreCompileInputs.cache
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVaul.30EFEC35.Up2Date
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/refint/GameVault.Infrastructure.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/GameVault.Infrastructure.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Infrastructure/obj/Debug/net10.0/ref/GameVault.Infrastructure.dll

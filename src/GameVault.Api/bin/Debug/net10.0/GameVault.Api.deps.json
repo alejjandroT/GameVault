@@ -1,0 +1,123 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "GameVault.Api/1.0.0": {
+        "dependencies": {
+          "GameVault.Application": "1.0.0",
+          "GameVault.Infrastructure": "1.0.0",
+          "Microsoft.AspNetCore.OpenApi": "10.0.6",
+          "Scalar.AspNetCore": "2.17.1"
+        },
+        "runtime": {
+          "GameVault.Api.dll": {}
+        }
+      },
+      "Microsoft.AspNetCore.OpenApi/10.0.6": {
+        "dependencies": {
+          "Microsoft.OpenApi": "2.0.0"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "assemblyVersion": "10.0.6.0",
+            "fileVersion": "10.0.626.17701"
+          }
+        }
+      },
+      "Microsoft.OpenApi/2.0.0": {
+        "runtime": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.0.0"
+          }
+        }
+      },
+      "Scalar.AspNetCore/2.17.1": {
+        "runtime": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "assemblyVersion": "2.17.1.0",
+            "fileVersion": "2.17.1.0"
+          }
+        }
+      },
+      "GameVault.Application/1.0.0": {
+        "dependencies": {
+          "GameVault.Domain": "1.0.0"
+        },
+        "runtime": {
+          "GameVault.Application.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "GameVault.Domain/1.0.0": {
+        "runtime": {
+          "GameVault.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "GameVault.Infrastructure/1.0.0": {
+        "dependencies": {
+          "GameVault.Application": "1.0.0",
+          "GameVault.Domain": "1.0.0"
+        },
+        "runtime": {
+          "GameVault.Infrastructure.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "GameVault.Api/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Microsoft.AspNetCore.OpenApi/10.0.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WTAQe7MAbbKztRyeCRGZOqqlIqpMHDBz+jKo7LLY6hp4qRqn7iucR24u32KJVxV7mF3tSEfwXH96NgGSiDBw7A==",
+      "path": "microsoft.aspnetcore.openapi/10.0.6",
+      "hashPath": "microsoft.aspnetcore.openapi.10.0.6.nupkg.sha512"
+    },
+    "Microsoft.OpenApi/2.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw==",
+      "path": "microsoft.openapi/2.0.0",
+      "hashPath": "microsoft.openapi.2.0.0.nupkg.sha512"
+    },
+    "Scalar.AspNetCore/2.17.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7np19IKEqPi+Isbo5Ka1wdMsQedv5jUECPHq223NgKEL7eGd+z98ncZRmpYfKotU/BD07kJSpnPaXp6X0TzRKw==",
+      "path": "scalar.aspnetcore/2.17.1",
+      "hashPath": "scalar.aspnetcore.2.17.1.nupkg.sha512"
+    },
+    "GameVault.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GameVault.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "GameVault.Infrastructure/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

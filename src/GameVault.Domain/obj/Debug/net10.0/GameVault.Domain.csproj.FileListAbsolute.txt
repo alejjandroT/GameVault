@@ -1,0 +1,11 @@
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/bin/Debug/net10.0/GameVault.Domain.deps.json
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/bin/Debug/net10.0/GameVault.Domain.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/bin/Debug/net10.0/GameVault.Domain.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.AssemblyInfoInputs.cache
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.AssemblyInfo.cs
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.csproj.CoreCompileInputs.cache
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/refint/GameVault.Domain.dll
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/GameVault.Domain.pdb
+/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/obj/Debug/net10.0/ref/GameVault.Domain.dll

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "+aoS6YxjFos=",
+  "success": true,
+  "projectFilePath": "/home/alejandrot/Documentos/GameVault/src/GameVault.Application/GameVault.Application.csproj",
+  "expectedPackageFiles": [
+    "/home/alejandrot/.nuget/packages/microsoft.aspnetcore.app.ref/10.0.10/microsoft.aspnetcore.app.ref.10.0.10.nupkg.sha512"
+  ],
+  "logs": []
+}
