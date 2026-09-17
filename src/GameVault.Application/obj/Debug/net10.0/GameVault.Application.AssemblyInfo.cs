@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GameVault.Application")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8c0d15ee1dcc5e37ad13197f25f6eec7236f12c5")]
 [assembly: System.Reflection.AssemblyProductAttribute("GameVault.Application")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GameVault.Application")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

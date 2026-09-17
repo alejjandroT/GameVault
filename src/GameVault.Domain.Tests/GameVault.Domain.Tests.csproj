@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameVault.Domain\GameVault.Domain.csproj" />
+    <ProjectReference Include="..\GameVault.Api\GameVault.Api.csproj" />
   </ItemGroup>
 
 </Project>

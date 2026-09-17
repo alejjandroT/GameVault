@@ -1,4 +1,4 @@
-using MedBook.Domain.Common;
+using GameVault.Domain.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameVault.Api.Extensions;

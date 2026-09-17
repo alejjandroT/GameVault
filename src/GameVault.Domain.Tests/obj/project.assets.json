@@ -8,6 +8,28 @@
           "build/netstandard2.0/coverlet.collector.targets": {}
         }
       },
+      "Microsoft.AspNetCore.OpenApi/10.0.6": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.OpenApi": "2.0.0"
+        },
+        "compile": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ],
+        "build": {
+          "build/_._": {}
+        }
+      },
       "Microsoft.CodeCoverage/17.14.1": {
         "type": "package",
         "compile": {
@@ -36,6 +58,19 @@
         "build": {
           "build/net8.0/Microsoft.NET.Test.Sdk.props": {},
           "build/net8.0/Microsoft.NET.Test.Sdk.targets": {}
+        }
+      },
+      "Microsoft.OpenApi/2.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Microsoft.OpenApi.dll": {
+            "related": ".pdb;.xml"
+          }
         }
       },
       "Microsoft.TestPlatform.ObjectModel/17.14.1": {
@@ -298,6 +333,22 @@
           }
         }
       },
+      "Scalar.AspNetCore/2.17.1": {
+        "type": "package",
+        "compile": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net10.0/Scalar.AspNetCore.dll": {
+            "related": ".xml"
+          }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
       "xunit/2.9.3": {
         "type": "package",
         "dependencies": {
@@ -394,6 +445,38 @@
           "build/net8.0/xunit.runner.visualstudio.props": {}
         }
       },
+      "GameVault.Api/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "GameVault.Application": "1.0.0",
+          "GameVault.Infrastructure": "1.0.0",
+          "Microsoft.AspNetCore.OpenApi": "10.0.6",
+          "Scalar.AspNetCore": "2.17.1"
+        },
+        "compile": {
+          "bin/placeholder/GameVault.Api.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GameVault.Api.dll": {}
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
+      },
+      "GameVault.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "GameVault.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/GameVault.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GameVault.Application.dll": {}
+        }
+      },
       "GameVault.Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
@@ -402,6 +485,20 @@
         },
         "runtime": {
           "bin/placeholder/GameVault.Domain.dll": {}
+        }
+      },
+      "GameVault.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "GameVault.Application": "1.0.0",
+          "GameVault.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/GameVault.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/GameVault.Infrastructure.dll": {}
         }
       }
     }
@@ -475,6 +572,24 @@
         "coverlet-icon.png",
         "coverlet.collector.6.0.4.nupkg.sha512",
         "coverlet.collector.nuspec"
+      ]
+    },
+    "Microsoft.AspNetCore.OpenApi/10.0.6": {
+      "sha512": "WTAQe7MAbbKztRyeCRGZOqqlIqpMHDBz+jKo7LLY6hp4qRqn7iucR24u32KJVxV7mF3tSEfwXH96NgGSiDBw7A==",
+      "type": "package",
+      "path": "microsoft.aspnetcore.openapi/10.0.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "PACKAGE.md",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/cs/Microsoft.AspNetCore.OpenApi.SourceGenerators.dll",
+        "build/Microsoft.AspNetCore.OpenApi.targets",
+        "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll",
+        "lib/net10.0/Microsoft.AspNetCore.OpenApi.xml",
+        "microsoft.aspnetcore.openapi.10.0.6.nupkg.sha512",
+        "microsoft.aspnetcore.openapi.nuspec"
       ]
     },
     "Microsoft.CodeCoverage/17.14.1": {
@@ -573,6 +688,24 @@
         "lib/net8.0/_._",
         "microsoft.net.test.sdk.17.14.1.nupkg.sha512",
         "microsoft.net.test.sdk.nuspec"
+      ]
+    },
+    "Microsoft.OpenApi/2.0.0": {
+      "sha512": "GGYLfzV/G/ct80OZ45JxnWP7NvMX1BCugn/lX7TH5o0lcVaviavsLMTxmFV2AybXWjbi3h6FF1vgZiTK6PXndw==",
+      "type": "package",
+      "path": "microsoft.openapi/2.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net8.0/Microsoft.OpenApi.dll",
+        "lib/net8.0/Microsoft.OpenApi.pdb",
+        "lib/net8.0/Microsoft.OpenApi.xml",
+        "lib/netstandard2.0/Microsoft.OpenApi.dll",
+        "lib/netstandard2.0/Microsoft.OpenApi.pdb",
+        "lib/netstandard2.0/Microsoft.OpenApi.xml",
+        "microsoft.openapi.2.0.0.nupkg.sha512",
+        "microsoft.openapi.nuspec"
       ]
     },
     "Microsoft.TestPlatform.ObjectModel/17.14.1": {
@@ -774,6 +907,25 @@
         "packageIcon.png"
       ]
     },
+    "Scalar.AspNetCore/2.17.1": {
+      "sha512": "7np19IKEqPi+Isbo5Ka1wdMsQedv5jUECPHq223NgKEL7eGd+z98ncZRmpYfKotU/BD07kJSpnPaXp6X0TzRKw==",
+      "type": "package",
+      "path": "scalar.aspnetcore/2.17.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "icon.png",
+        "lib/net10.0/Scalar.AspNetCore.dll",
+        "lib/net10.0/Scalar.AspNetCore.xml",
+        "lib/net8.0/Scalar.AspNetCore.dll",
+        "lib/net8.0/Scalar.AspNetCore.xml",
+        "lib/net9.0/Scalar.AspNetCore.dll",
+        "lib/net9.0/Scalar.AspNetCore.xml",
+        "scalar.aspnetcore.2.17.1.nupkg.sha512",
+        "scalar.aspnetcore.nuspec"
+      ]
+    },
     "xunit/2.9.3": {
       "sha512": "TlXQBinK35LpOPKHAqbLY4xlEen9TBafjs0V5KnA4wZsoQLQJiirCR4CbIXvOH8NzkW4YeJKP5P/Bnrodm0h9Q==",
       "type": "package",
@@ -914,14 +1066,30 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
+    "GameVault.Api/1.0.0": {
+      "type": "project",
+      "path": "../GameVault.Api/GameVault.Api.csproj",
+      "msbuildProject": "../GameVault.Api/GameVault.Api.csproj"
+    },
+    "GameVault.Application/1.0.0": {
+      "type": "project",
+      "path": "../GameVault.Application/GameVault.Application.csproj",
+      "msbuildProject": "../GameVault.Application/GameVault.Application.csproj"
+    },
     "GameVault.Domain/1.0.0": {
       "type": "project",
       "path": "../GameVault.Domain/GameVault.Domain.csproj",
       "msbuildProject": "../GameVault.Domain/GameVault.Domain.csproj"
+    },
+    "GameVault.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../GameVault.Infrastructure/GameVault.Infrastructure.csproj",
+      "msbuildProject": "../GameVault.Infrastructure/GameVault.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net10.0": [
+      "GameVault.Api >= 1.0.0",
       "GameVault.Domain >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "coverlet.collector >= 6.0.4",
@@ -954,6 +1122,9 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
+            "/home/alejandrot/Documentos/GameVault/src/GameVault.Api/GameVault.Api.csproj": {
+              "projectPath": "/home/alejandrot/Documentos/GameVault/src/GameVault.Api/GameVault.Api.csproj"
+            },
             "/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/GameVault.Domain.csproj": {
               "projectPath": "/home/alejandrot/Documentos/GameVault/src/GameVault.Domain/GameVault.Domain.csproj"
             }
@@ -1292,5 +1463,17 @@
         }
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1903",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
+      "libraryId": "Microsoft.OpenApi",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }
