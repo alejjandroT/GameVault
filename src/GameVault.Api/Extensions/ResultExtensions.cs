@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameVault.Api.Extensions;
 
-/// <summary>
-/// Métodos de extensión para mapear instancias de Result y Result<T> a IResult de Minimal APIs (RFC 7807).
-/// </summary>
+
+// Métodos de extensión para mapear instancias de Result y Result<T> a IResult de Minimal APIs
 public static class ResultExtensions
 {
     public static IResult ToHttpResult<TValue>(this Result<TValue> result)

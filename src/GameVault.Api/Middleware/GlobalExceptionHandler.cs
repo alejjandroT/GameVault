@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GameVault.Api.Middleware;
 
-/// <summary>
-/// Manejador global de excepciones no controladas según el estándar RFC 7807 (ProblemDetails).
-/// </summary>
+
+// Manejador global de excepciones no controladas
 public class GlobalExceptionHandler : IExceptionHandler
 {
     private readonly ILogger<GlobalExceptionHandler> _logger;

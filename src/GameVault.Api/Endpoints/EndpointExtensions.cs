@@ -22,11 +22,7 @@ public static class EndpointExtensions
         return services;
     }
 
-    /// <summary>
-    /// Resuelve todos los IEndpoint y los mapea bajo un prefijo raíz común (por defecto '/api').
-    /// </summary>
-    /// <param name="app">La aplicación web.</param>
-    /// <param name="prefix">El prefijo base global para todos los endpoints (ej. "/api" o "/api/v1").</param>
+    
     public static IApplicationBuilder MapEndpoints(this WebApplication app, string? prefix = "/api")
     {
         var endpoints = app.Services.GetRequiredService<IEnumerable<IEndpoint>>();
