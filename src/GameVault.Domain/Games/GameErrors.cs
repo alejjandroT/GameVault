@@ -8,6 +8,9 @@ public static class GameErrors
     public static readonly Error EmptyTitle = Error.Validation(
         "Game.EmptyTitle", "El título del juego no puede estar vacío.");
 
+    public static readonly Error EmptyGenre = Error.Validation(
+        "Game.EmptyGenre", "El género del juego no puede estar vacío.");
+
     public static readonly Error TitleTooLong = Error.Validation(
         "Game.TitleTooLong", "El título no puede superar los 100 caracteres.");
 
@@ -28,8 +31,4 @@ public static class GameErrors
 
     public static Error DuplicateTitle(string title) => Error.Conflict(
         "Game.DuplicateTitle", $"Ya existe un juego registrado con el título '{title}'.");
-
-    public static Error DuplicateTitle(string title) => Error.Conflict(
-        "Game.DuplicateTitle", $"Ya existe un juego registrado con el título '{title}'.");
-        
 }
