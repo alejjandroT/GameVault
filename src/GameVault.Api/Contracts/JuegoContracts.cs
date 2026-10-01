@@ -1,11 +1,11 @@
 namespace GameVault.Api.Contracts;
 
 public record JuegoResponse(
-    int Id,
+    Guid Id,
     string Titulo,
     string Genero,
     decimal Precio,
-    bool Publicado);
+    string Estado);
 
 public record CrearJuegoRequest(
     string Titulo,

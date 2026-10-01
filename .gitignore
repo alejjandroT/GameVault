@@ -1,6 +1,8 @@
 # Build output
 [Bb]in/
 [Oo]bj/
+*.db
+
 # Visual Studio
 .vs/
 *.user
@@ -14,4 +16,4 @@ packages/
 
 # Publish
 publish/
-*.pubxml.user   
+*.pubxml.user

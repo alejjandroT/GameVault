@@ -1,5 +1,6 @@
 using GameVault.Api.Endpoints;
 using GameVault.Api.Middleware;
+using GameVault.Application;
 using GameVault.Infrastructure;
 using Scalar.AspNetCore;
 
@@ -14,8 +15,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 // Auto-descubrimiento y registro de todos los IEndpoint
 builder.Services.AddEndpoints(typeof(Program).Assembly);
-
-// Infraestructura: SQLite + migraciones
+builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
