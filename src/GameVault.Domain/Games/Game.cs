@@ -3,7 +3,7 @@ using GameVault.Domain.Common;
 
 namespace GameVault.Domain.Games;
 
-public sealed class Game : Entity<GameId>
+public sealed class Game : AuditableEntity<GameId>
 {
     public string Title { get; private set; }
     public string Genre { get; private set; }
@@ -42,7 +42,16 @@ public sealed class Game : Entity<GameId>
         return Result.Success(game);
     }
 
-    public static Game Reconstruct(GameId id, string title, string genre, decimal price, GameStatus status)
+    public static Game Reconstruct(
+        GameId id,
+        string title,
+        string genre,
+        decimal price,
+        GameStatus status,
+        DateTime createdAt,
+        string createdBy,
+        DateTime? updatedAt,
+        string? updatedBy)
     {
         var moneyResult = Money.Create(price);
         if (moneyResult.IsFailure)
@@ -50,7 +59,12 @@ public sealed class Game : Entity<GameId>
             throw new InvalidOperationException($"No se puede reconstruir un juego inválido: {moneyResult.Error.Description}");
         }
 
-        return new Game(id, title.Trim(), genre.Trim(), moneyResult.Value, status);
+        var game = new Game(id, title.Trim(), genre.Trim(), moneyResult.Value, status);
+        game.MarkCreated(createdBy, createdAt);
+        if (updatedAt.HasValue && updatedBy is not null)
+            game.MarkUpdated(updatedBy, updatedAt.Value);
+
+        return game;
     }
 
     public Result Publish()

@@ -3,5 +3,9 @@ CREATE TABLE IF NOT EXISTS Games (
     Title TEXT NOT NULL,
     Genre TEXT NOT NULL,
     Price DECIMAL NOT NULL,
-    Status INTEGER NOT NULL
+    Status INTEGER NOT NULL,
+    CreatedAt TEXT NOT NULL,
+    CreatedBy TEXT NOT NULL,
+    UpdatedAt TEXT NULL,
+    UpdatedBy TEXT NULL
 );

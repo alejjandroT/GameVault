@@ -3,12 +3,12 @@ using Microsoft.Data.Sqlite;
 
 namespace GameVault.Infrastructure.Persistence;
 
-public interface ISqliteConnectionFactory
+public interface IDbConnectionFactory
 {
     IDbConnection CreateConnection();
 }
 
-public sealed class SqliteConnectionFactory : ISqliteConnectionFactory
+public sealed class SqliteConnectionFactory : IDbConnectionFactory
 {
     private readonly string _connectionString;
 

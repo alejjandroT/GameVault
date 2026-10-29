@@ -17,7 +17,7 @@ public static class DependencyInjection
 
         DatabaseInitializer.Initialize(connectionString);
 
-        services.AddSingleton<ISqliteConnectionFactory>(_ => new SqliteConnectionFactory(connectionString));
+        services.AddSingleton<IDbConnectionFactory>(_ => new SqliteConnectionFactory(connectionString));
         services.AddScoped<IGameRepository, GameRepository>();
 
         return services;
