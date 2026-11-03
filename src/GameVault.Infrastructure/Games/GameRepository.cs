@@ -78,7 +78,7 @@ internal sealed class GameRepository : RepositoryBase, IGameRepository
     public async Task<Game?> GetByIdAsync(GameId id, CancellationToken ct = default)
     {
         const string sql = @"
-            SELECT Id, Title, Genre, Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
+            SELECT Id, Title, Genre, CAST(Price AS REAL) AS Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
             FROM Games
             WHERE Id = @Id;";
 
@@ -94,7 +94,7 @@ internal sealed class GameRepository : RepositoryBase, IGameRepository
     public async Task<IReadOnlyList<Game>> GetAllAsync(CancellationToken ct = default)
     {
         const string sql = @"
-            SELECT Id, Title, Genre, Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
+            SELECT Id, Title, Genre, CAST(Price AS REAL) AS Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
             FROM Games
             ORDER BY Title ASC;";
 
