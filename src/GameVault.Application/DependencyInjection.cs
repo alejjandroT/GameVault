@@ -9,6 +9,10 @@ using GameVault.Application.Clients.DeactivateClient;
 using GameVault.Application.Clients.GetClientById;
 using GameVault.Application.Clients.ListClients;
 using GameVault.Application.Clients.UpdateClient;
+using GameVault.Application.Orders.CancelOrder;
+using GameVault.Application.Orders.CreateOrder;
+using GameVault.Application.Orders.GetOrderById;
+using GameVault.Application.Orders.ListOrders;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameVault.Application;
@@ -28,6 +32,10 @@ public static class DependencyInjection
         services.AddScoped<DeactivateClientHandler>();
         services.AddScoped<GetClientByIdHandler>();
         services.AddScoped<ListClientsHandler>();
+        services.AddScoped<CreateOrderHandler>();
+        services.AddScoped<GetOrderByIdHandler>();
+        services.AddScoped<ListOrdersHandler>();
+        services.AddScoped<CancelOrderHandler>();
         return services;
     }
 }
