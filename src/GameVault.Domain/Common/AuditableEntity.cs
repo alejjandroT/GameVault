@@ -13,17 +13,12 @@ public abstract class AuditableEntity<TId> : Entity<TId>
     public DateTime? UpdatedAt { get; private set; }
     public string? UpdatedBy { get; private set; }
 
-    public void MarkCreated(string by, DateTime at)
+    protected void RestoreAudit(DateTime createdAt, string createdBy, DateTime? updatedAt, string? updatedBy)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(by);
-        CreatedBy = by;
-        CreatedAt = at;
-    }
-
-    public void MarkUpdated(string by, DateTime at)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(by);
-        UpdatedBy = by;
-        UpdatedAt = at;
+        ArgumentException.ThrowIfNullOrWhiteSpace(createdBy);
+        CreatedAt = createdAt;
+        CreatedBy = createdBy;
+        UpdatedAt = updatedAt;
+        UpdatedBy = updatedBy;
     }
 }

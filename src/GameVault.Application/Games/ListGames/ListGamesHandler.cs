@@ -1,3 +1,4 @@
+using GameVault.Application.Abstractions.Persistence;
 using GameVault.Domain.Games;
 
 namespace GameVault.Application.Games.ListGames;

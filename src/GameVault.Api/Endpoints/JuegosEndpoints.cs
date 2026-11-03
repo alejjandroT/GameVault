@@ -61,7 +61,7 @@ public class JuegosEndpoints : IEndpoint
             var result = await handler.HandleAsync(command, ct);
 
             return result.IsSuccess
-                ? Result.Success(ToResponse(result.Value)).ToHttpResult()
+                ? Result.Success().ToHttpResult()
                 : Result.Failure<JuegoResponse>(result.Error).ToHttpResult();
         })
         .WithName("ActualizarJuego")
@@ -81,7 +81,7 @@ public class JuegosEndpoints : IEndpoint
         {
             var result = await handler.HandleAsync(new GameId(id), ct);
             return result.IsSuccess
-                ? Result.Success(ToResponse(result.Value)).ToHttpResult()
+                ? Result.Success().ToHttpResult()
                 : Result.Failure<JuegoResponse>(result.Error).ToHttpResult();
         })
         .WithName("PublicarJuego")

@@ -60,9 +60,7 @@ public sealed class Game : AuditableEntity<GameId>
         }
 
         var game = new Game(id, title.Trim(), genre.Trim(), moneyResult.Value, status);
-        game.MarkCreated(createdBy, createdAt);
-        if (updatedAt.HasValue && updatedBy is not null)
-            game.MarkUpdated(updatedBy, updatedAt.Value);
+        game.RestoreAudit(createdAt, createdBy, updatedAt, updatedBy);
 
         return game;
     }

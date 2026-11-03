@@ -1,4 +1,4 @@
-using GameVault.Application.Common;
+using GameVault.Application.Abstractions.Persistence;
 using GameVault.Domain.Common;
 using GameVault.Domain.Games;
 
@@ -16,7 +16,6 @@ public sealed class DiscontinueGameHandler(IGameRepository repository)
         if (discontinueResult.IsFailure)
             return Result.Failure<Game>(discontinueResult.Error);
 
-        game.MarkUpdated(AuditActor.System, DateTime.UtcNow);
         await repository.UpdateAsync(game, ct);
         return Result.Success(game);
     }
