@@ -26,6 +26,9 @@ public static class GameErrors
     public static readonly Error CannotDiscontinue = Error.Conflict(
         "Game.CannotDiscontinue", "Solo un juego Publicado puede descontinuarse.");
 
+    public static readonly Error CannotChangeDiscontinued = Error.Conflict(
+        "Game.CannotChangeDiscontinued", "No se puede cambiar el precio de un juego descontinuado.");
+
     public static Error NotFound(GameId id) => Error.NotFound(
         "Game.NotFound", $"No se encontró un juego con el Id '{id.Value}'.");
 

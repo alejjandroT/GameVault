@@ -1,8 +1,11 @@
-using GameVault.Application.Games;
+using GameVault.Application.Abstractions;
+using GameVault.Application.Abstractions.Persistence;
 using GameVault.Infrastructure.Games;
 using GameVault.Infrastructure.Persistence;
+using GameVault.Infrastructure.Servicios;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace GameVault.Infrastructure;
 
@@ -13,11 +16,13 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(configuration);
 
-        var connectionString = configuration.GetConnectionString("Sqlite") ?? "Data Source=gamevault.db";
+        var connectionString = configuration.GetConnectionString("GameVault");
+        if (string.IsNullOrWhiteSpace(connectionString))
+            throw new InvalidOperationException("No se encontró la cadena de conexión 'GameVault'.");
 
-        DatabaseInitializer.Initialize(connectionString);
-
-        services.AddSingleton<ISqliteConnectionFactory>(_ => new SqliteConnectionFactory(connectionString));
+        services.AddSingleton<IDbConnectionFactory>(_ => new SqliteConnectionFactory(connectionString));
+        services.TryAddSingleton<TimeProvider>(TimeProvider.System);
+        services.AddScoped<IUsuarioActual, UsuarioActualSistema>();
         services.AddScoped<IGameRepository, GameRepository>();
 
         return services;

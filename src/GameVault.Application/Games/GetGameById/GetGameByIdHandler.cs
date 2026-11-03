@@ -1,5 +1,6 @@
 using GameVault.Domain.Common;
 using GameVault.Domain.Games;
+using GameVault.Application.Abstractions.Persistence;
 
 namespace GameVault.Application.Games.GetGameById;
 

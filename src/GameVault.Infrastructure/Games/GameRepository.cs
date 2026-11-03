@@ -1,27 +1,29 @@
 using System.Data;
+using System.Globalization;
 using Dapper;
-using GameVault.Application.Games;
+using GameVault.Application.Abstractions;
+using GameVault.Application.Abstractions.Persistence;
 using GameVault.Domain.Games;
 using GameVault.Infrastructure.Persistence;
+using GameVault.Infrastructure.Persistence.Registros;
+using GameVault.Infrastructure.Persistence.Repositories;
 
 namespace GameVault.Infrastructure.Games;
 
-public sealed class GameRepository : IGameRepository
+internal sealed class GameRepository : RepositoryBase, IGameRepository
 {
-    private readonly ISqliteConnectionFactory _connectionFactory;
-
-    public GameRepository(ISqliteConnectionFactory connectionFactory)
+    public GameRepository(IDbConnectionFactory connectionFactory, TimeProvider reloj, IUsuarioActual usuario)
+        : base(connectionFactory, reloj, usuario)
     {
-        _connectionFactory = connectionFactory;
     }
 
     public async Task AddAsync(Game game, CancellationToken ct = default)
     {
         const string sql = @"
-            INSERT INTO Games (Id, Title, Genre, Price, Status)
-            VALUES (@Id, @Title, @Genre, @Price, @Status);";
+            INSERT INTO Games (Id, Title, Genre, Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
+            VALUES (@Id, @Title, @Genre, @Price, @Status, @CreatedAt, @CreatedBy, @UpdatedAt, @UpdatedBy);";
 
-        using var connection = _connectionFactory.CreateConnection();
+        using var connection = ConnectionFactory.CreateConnection();
         connection.Open();
 
         await connection.ExecuteAsync(
@@ -33,7 +35,42 @@ public sealed class GameRepository : IGameRepository
                     Title = game.Title,
                     Genre = game.Genre,
                     Price = game.Price.Amount,
-                    Status = (int)game.Status
+                    Status = (int)game.Status,
+                    CreatedAt = FormatDate(NowUtc),
+                    CreatedBy = CurrentUser,
+                    UpdatedAt = (string?)null,
+                    UpdatedBy = game.UpdatedBy
+                },
+                cancellationToken: ct));
+    }
+
+    public async Task UpdateAsync(Game game, CancellationToken ct = default)
+    {
+        const string sql = @"
+            UPDATE Games
+            SET Title = @Title,
+                Genre = @Genre,
+                Price = @Price,
+                Status = @Status,
+                UpdatedAt = @UpdatedAt,
+                UpdatedBy = @UpdatedBy
+            WHERE Id = @Id;";
+
+        using var connection = ConnectionFactory.CreateConnection();
+        connection.Open();
+
+        await connection.ExecuteAsync(
+            new CommandDefinition(
+                sql,
+                new
+                {
+                    Id = game.Id.Value.ToString(),
+                    Title = game.Title,
+                    Genre = game.Genre,
+                    Price = game.Price.Amount,
+                    Status = (int)game.Status,
+                    UpdatedAt = FormatDate(NowUtc),
+                    UpdatedBy = CurrentUser
                 },
                 cancellationToken: ct));
     }
@@ -41,61 +78,54 @@ public sealed class GameRepository : IGameRepository
     public async Task<Game?> GetByIdAsync(GameId id, CancellationToken ct = default)
     {
         const string sql = @"
-            SELECT Id, Title, Genre, Price, Status
+            SELECT Id, Title, Genre, CAST(Price AS REAL) AS Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
             FROM Games
             WHERE Id = @Id;";
 
-        using var connection = _connectionFactory.CreateConnection();
+        using var connection = ConnectionFactory.CreateConnection();
         connection.Open();
 
-        var row = await connection.QuerySingleOrDefaultAsync<GameRow>(
+        var registro = await connection.QuerySingleOrDefaultAsync<GameRegistro>(
             new CommandDefinition(sql, new { Id = id.Value.ToString() }, cancellationToken: ct));
 
-        return row is null ? null : Map(row);
+        return registro?.ToEntity();
     }
 
     public async Task<IReadOnlyList<Game>> GetAllAsync(CancellationToken ct = default)
     {
         const string sql = @"
-            SELECT Id, Title, Genre, Price, Status
+            SELECT Id, Title, Genre, CAST(Price AS REAL) AS Price, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy
             FROM Games
             ORDER BY Title ASC;";
 
-        using var connection = _connectionFactory.CreateConnection();
+        using var connection = ConnectionFactory.CreateConnection();
         connection.Open();
 
-        var rows = await connection.QueryAsync<GameRow>(
+        var registros = await connection.QueryAsync<GameRegistro>(
             new CommandDefinition(sql, cancellationToken: ct));
 
-        return rows.Select(Map).ToList();
+        return registros.Select(registro => registro.ToEntity()).ToList();
     }
 
-    public async Task<bool> ExistsByTitleAsync(string title, CancellationToken ct = default)
+    public async Task<bool> ExistsByTitleAsync(string title, GameId? excludeId = null, CancellationToken ct = default)
     {
         const string sql = @"
             SELECT 1
             FROM Games
-            WHERE LOWER(Title) = LOWER(@Title)
+                        WHERE Title = @Title
+                            AND (@ExcludeId IS NULL OR Id <> @ExcludeId)
             LIMIT 1;";
 
-        using var connection = _connectionFactory.CreateConnection();
+        using var connection = ConnectionFactory.CreateConnection();
         connection.Open();
 
         var result = await connection.ExecuteScalarAsync<int?>(
-            new CommandDefinition(sql, new { Title = title }, cancellationToken: ct));
+            new CommandDefinition(sql, new { Title = title, ExcludeId = excludeId?.Value.ToString() }, cancellationToken: ct));
 
         return result.HasValue;
     }
 
-    private static Game Map(GameRow row)
-    {
-        return Game.Reconstruct(
-            new GameId(Guid.Parse(row.Id)),
-            row.Title,
-            row.Genre,
-            row.Price,
-            (GameStatus)row.Status);
-    }
-
-    private sealed record GameRow(string Id, string Title, string Genre, decimal Price, int Status);
+    private static string FormatDate(DateTime value) => value
+        .ToUniversalTime()
+        .ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 }

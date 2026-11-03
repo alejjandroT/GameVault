@@ -3,17 +3,16 @@ using GameVault.Domain.Common;
 
 namespace GameVault.Domain.Games;
 
-public sealed class Game
+public sealed class Game : AuditableEntity<GameId>
 {
-    public GameId Id { get; private set; }
     public string Title { get; private set; }
     public string Genre { get; private set; }
     public Money Price { get; private set; }
     public GameStatus Status { get; private set; }
 
     private Game(GameId id, string title, string genre, Money price, GameStatus status)
+        : base(id)
     {
-        Id = id;
         Title = title;
         Genre = genre;
         Price = price;
@@ -22,11 +21,9 @@ public sealed class Game
 
     public static Result<Game> Create(string title, string genre, decimal price)
     {
-        if (string.IsNullOrWhiteSpace(title))
-            return Result.Failure<Game>(GameErrors.EmptyTitle);
-
-        if (title.Length > 100)
-            return Result.Failure<Game>(GameErrors.TitleTooLong);
+        var titleError = ValidateTitle(title);
+        if (titleError is not null)
+            return Result.Failure<Game>(titleError);
 
         if (string.IsNullOrWhiteSpace(genre))
             return Result.Failure<Game>(GameErrors.EmptyGenre);
@@ -45,7 +42,16 @@ public sealed class Game
         return Result.Success(game);
     }
 
-    public static Game Reconstruct(GameId id, string title, string genre, decimal price, GameStatus status)
+    public static Game Reconstruct(
+        GameId id,
+        string title,
+        string genre,
+        decimal price,
+        GameStatus status,
+        DateTime createdAt,
+        string createdBy,
+        DateTime? updatedAt,
+        string? updatedBy)
     {
         var moneyResult = Money.Create(price);
         if (moneyResult.IsFailure)
@@ -53,7 +59,10 @@ public sealed class Game
             throw new InvalidOperationException($"No se puede reconstruir un juego inválido: {moneyResult.Error.Description}");
         }
 
-        return new Game(id, title.Trim(), genre.Trim(), moneyResult.Value, status);
+        var game = new Game(id, title.Trim(), genre.Trim(), moneyResult.Value, status);
+        game.RestoreAudit(createdAt, createdBy, updatedAt, updatedBy);
+
+        return game;
     }
 
     public Result Publish()
@@ -72,5 +81,43 @@ public sealed class Game
 
         Status = GameStatus.Discontinued;
         return Result.Success();
+    }
+
+    public Result UpdatePrice(decimal newPrice)
+    {
+        if (Status == GameStatus.Discontinued)
+            return Result.Failure(GameErrors.CannotChangeDiscontinued);
+
+        var priceResult = Money.Create(newPrice);
+        if (priceResult.IsFailure)
+            return Result.Failure(priceResult.Error);
+
+        Price = priceResult.Value;
+        return Result.Success();
+    }
+
+    public Result UpdateDetails(string title, string genre)
+    {
+        var titleError = ValidateTitle(title);
+        if (titleError is not null)
+            return Result.Failure(titleError);
+
+        if (string.IsNullOrWhiteSpace(genre))
+            return Result.Failure(GameErrors.EmptyGenre);
+
+        Title = title.Trim();
+        Genre = genre.Trim();
+        return Result.Success();
+    }
+
+    private static Error? ValidateTitle(string title)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            return GameErrors.EmptyTitle;
+
+        if (title.Length > 100)
+            return GameErrors.TitleTooLong;
+
+        return null;
     }
 }
