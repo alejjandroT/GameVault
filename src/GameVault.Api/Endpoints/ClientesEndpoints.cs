@@ -5,6 +5,7 @@ using GameVault.Application.Clients.DeactivateClient;
 using GameVault.Application.Clients.GetClientById;
 using GameVault.Application.Clients.ListClients;
 using GameVault.Application.Clients.UpdateClient;
+using GameVault.Application.Licenses.GetClientLibrary;
 using GameVault.Domain.Clients;
 using GameVault.Domain.Common;
 
@@ -67,6 +68,16 @@ public sealed class ClientesEndpoints : IEndpoint
         })
         .WithName("DesactivarCliente")
         .WithSummary("Desactiva lógicamente un cliente");
+
+        group.MapGet("/{id:guid}/biblioteca", async (Guid id, GetClientLibraryHandler handler, CancellationToken ct) =>
+        {
+            var result = await handler.HandleAsync(new ClientId(id), ct);
+            return result.IsSuccess
+                ? Result.Success(result.Value.Select(ToLicenseResponse).ToList()).ToHttpResult()
+                : Result.Failure<IReadOnlyList<LicenciaResponse>>(result.Error).ToHttpResult();
+        })
+        .WithName("ObtenerBibliotecaCliente")
+        .WithSummary("Obtiene las licencias digitales del cliente");
     }
 
     private static ClienteResponse ToResponse(Client client) => new(
@@ -78,4 +89,11 @@ public sealed class ClientesEndpoints : IEndpoint
         CreadoPor: client.CreatedBy,
         ActualizadoEn: client.UpdatedAt,
         ActualizadoPor: client.UpdatedBy);
+
+    private static LicenciaResponse ToLicenseResponse(GameVault.Domain.Licenses.DigitalLicense license) => new(
+        Id: license.Id.Value,
+        OrdenId: license.OrderId.Value,
+        JuegoId: license.GameId.Value,
+        Clave: license.Key,
+        EmitidaEn: license.CreatedAt);
 }

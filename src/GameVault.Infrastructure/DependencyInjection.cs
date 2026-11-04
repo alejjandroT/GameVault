@@ -27,6 +27,9 @@ public static class DependencyInjection
         services.AddScoped<IGameRepository, GameRepository>();
         services.AddScoped<IClientRepository, ClientRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ILicenseRepository, LicenseRepository>();
+        services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
 
         return services;
     }

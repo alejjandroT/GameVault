@@ -64,4 +64,13 @@ public sealed class Order : AuditableEntity<OrderId>
         Status = OrderStatus.Cancelled;
         return Result.Success();
     }
+
+    public Result MarkAsPaid()
+    {
+        if (Status != OrderStatus.Pending || _items.Count == 0)
+            return Result.Failure(OrderErrors.CannotPay);
+
+        Status = OrderStatus.Paid;
+        return Result.Success();
+    }
 }

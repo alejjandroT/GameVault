@@ -13,6 +13,8 @@ using GameVault.Application.Orders.CancelOrder;
 using GameVault.Application.Orders.CreateOrder;
 using GameVault.Application.Orders.GetOrderById;
 using GameVault.Application.Orders.ListOrders;
+using GameVault.Application.Payments.PayOrder;
+using GameVault.Application.Licenses.GetClientLibrary;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GameVault.Application;
@@ -36,6 +38,8 @@ public static class DependencyInjection
         services.AddScoped<GetOrderByIdHandler>();
         services.AddScoped<ListOrdersHandler>();
         services.AddScoped<CancelOrderHandler>();
+        services.AddScoped<PayOrderHandler>();
+        services.AddScoped<GetClientLibraryHandler>();
         return services;
     }
 }

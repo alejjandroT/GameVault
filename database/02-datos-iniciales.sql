@@ -21,7 +21,8 @@ INSERT OR IGNORE INTO Orders
     (Id, ClientId, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
 VALUES
     ('dddddddd-dddd-4ddd-8ddd-dddddddddddd', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 0, '2026-02-05 09:00:00', 'sistema', NULL, NULL),
-    ('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 2, '2026-02-06 10:30:00', 'sistema', '2026-02-06 11:00:00', 'sistema');
+    ('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', 2, '2026-02-06 10:30:00', 'sistema', '2026-02-06 11:00:00', 'sistema'),
+    ('ffffffff-ffff-4fff-8fff-ffffffffffff', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', 1, '2026-02-07 12:00:00', 'sistema', '2026-02-07 12:01:00', 'sistema');
 
 INSERT OR IGNORE INTO OrderItems
     (OrderId, GameId, UnitPrice)
@@ -29,3 +30,18 @@ VALUES
     ('dddddddd-dddd-4ddd-8ddd-dddddddddddd', '22222222-2222-4222-8222-222222222222', 49.99),
     ('dddddddd-dddd-4ddd-8ddd-dddddddddddd', '55555555-5555-4555-8555-555555555555', 500.00),
     ('eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', '22222222-2222-4222-8222-222222222222', 49.99);
+
+INSERT OR IGNORE INTO OrderItems
+    (OrderId, GameId, UnitPrice)
+VALUES
+    ('ffffffff-ffff-4fff-8fff-ffffffffffff', '22222222-2222-4222-8222-222222222222', 49.99);
+
+INSERT OR IGNORE INTO Payments
+    (Id, OrderId, Amount, Method, Status, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
+VALUES
+    ('99999999-9999-4999-8999-999999999999', 'ffffffff-ffff-4fff-8fff-ffffffffffff', 49.99, 0, 0, '2026-02-07 12:01:00', 'sistema', NULL, NULL);
+
+INSERT OR IGNORE INTO DigitalLicenses
+    (Id, OrderId, ClientId, GameId, LicenseKey, CreatedAt, CreatedBy, UpdatedAt, UpdatedBy)
+VALUES
+    ('88888888-8888-4888-8888-888888888888', 'ffffffff-ffff-4fff-8fff-ffffffffffff', 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa', '22222222-2222-4222-8222-222222222222', 'AB12-CD34-EF56-7890', '2026-02-07 12:01:00', 'sistema', NULL, NULL);

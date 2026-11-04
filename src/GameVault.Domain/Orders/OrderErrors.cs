@@ -22,6 +22,9 @@ public static class OrderErrors
     public static readonly Error CannotCancel = Error.Conflict(
         "Order.CannotCancel", "Solo se pueden cancelar órdenes pendientes.");
 
+    public static readonly Error CannotPay = Error.Conflict(
+        "Order.CannotPay", "Solo se pueden pagar órdenes pendientes que contengan al menos un juego.");
+
     public static Error NotFound(OrderId id) => Error.NotFound(
         "Order.NotFound", $"No se encontró una orden con el Id '{id.Value}'.");
 }
