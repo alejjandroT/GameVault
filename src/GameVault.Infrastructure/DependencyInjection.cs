@@ -2,6 +2,7 @@ using GameVault.Application.Abstractions;
 using GameVault.Application.Abstractions.Persistence;
 using GameVault.Infrastructure.Games;
 using GameVault.Infrastructure.Persistence;
+using GameVault.Infrastructure.Persistence.Repositories;
 using GameVault.Infrastructure.Servicios;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,11 @@ public static class DependencyInjection
         services.TryAddSingleton<TimeProvider>(TimeProvider.System);
         services.AddScoped<IUsuarioActual, UsuarioActualSistema>();
         services.AddScoped<IGameRepository, GameRepository>();
+        services.AddScoped<IClientRepository, ClientRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<ILicenseRepository, LicenseRepository>();
+        services.AddSingleton<IPaymentGateway, FakePaymentGateway>();
 
         return services;
     }
