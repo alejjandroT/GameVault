@@ -33,14 +33,30 @@ public sealed class OrdenesEndpoints : IEndpoint
         .WithName("CrearOrden")
         .WithSummary("Crea una orden para un cliente con juegos publicados");
 
-        group.MapGet("/", async (ListOrdersHandler handler, CancellationToken ct) =>
+        group.MapGet("/", async (Guid? clienteId, string? estado, ListOrdersHandler handler, CancellationToken ct) =>
         {
-            var orders = await handler.HandleAsync(new ListOrdersCommand(), ct);
-            var response = orders.Select(ToResponse).ToList();
-            return Result.Success(response).ToHttpResult();
+            OrderStatus? status = null;
+            if (estado is not null)
+            {
+                if (!Enum.TryParse<OrderStatus>(estado, ignoreCase: true, out var parsedStatus)
+                    || !Enum.IsDefined(parsedStatus)
+                    || !Enum.GetNames<OrderStatus>().Contains(estado, StringComparer.OrdinalIgnoreCase))
+                {
+                    return Result.Failure<IReadOnlyList<OrdenResumenResponse>>(Error.Validation(
+                        "Order.InvalidStatus", "El estado debe ser Pending, Paid o Cancelled.")).ToHttpResult();
+                }
+
+                status = parsedStatus;
+            }
+
+            var command = new ListOrdersCommand(
+                clienteId is null ? null : new ClientId(clienteId.Value),
+                status);
+            var summaries = await handler.HandleAsync(command, ct);
+            return Result.Success(summaries.Select(ToSummaryResponse).ToList()).ToHttpResult();
         })
         .WithName("ObtenerOrdenes")
-        .WithSummary("Obtiene la lista de órdenes");
+        .WithSummary("Obtiene órdenes filtradas opcionalmente por cliente y estado");
 
         group.MapGet("/{id:guid}", async (Guid id, GetOrderByIdHandler handler, CancellationToken ct) =>
         {
@@ -95,6 +111,14 @@ public sealed class OrdenesEndpoints : IEndpoint
         CreadoPor: order.CreatedBy,
         ActualizadoEn: order.UpdatedAt,
         ActualizadoPor: order.UpdatedBy);
+
+    private static OrdenResumenResponse ToSummaryResponse(GameVault.Application.Orders.OrderSummary summary) => new(
+        summary.Id,
+        summary.Status,
+        summary.Total,
+        summary.ItemCount,
+        summary.CreatedAt,
+        new ClienteResumenResponse(summary.Client.Id, summary.Client.Name, summary.Client.Email));
 
     private static PagoResponse ToResponse(Payment payment) => new(
         Id: payment.Id.Value,

@@ -10,7 +10,8 @@ namespace GameVault.Application.Payments.PayOrder;
 public sealed class PayOrderHandler(
     IOrderRepository orderRepository,
     IPaymentRepository paymentRepository,
-    IPaymentGateway paymentGateway)
+    IPaymentGateway paymentGateway,
+    TimeProvider clock)
 {
     public async Task<Result<Payment>> HandleAsync(PayOrderCommand command, CancellationToken ct = default)
     {
@@ -18,7 +19,7 @@ public sealed class PayOrderHandler(
         if (order is null)
             return Result.Failure<Payment>(OrderErrors.NotFound(command.OrderId));
 
-        var paymentResult = Payment.Create(order, order.Total, command.Method);
+        var paymentResult = Payment.Create(order, order.Total, command.Method, clock.GetUtcNow().UtcDateTime);
         if (paymentResult.IsFailure)
             return Result.Failure<Payment>(paymentResult.Error);
 

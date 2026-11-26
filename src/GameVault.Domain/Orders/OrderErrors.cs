@@ -16,6 +16,12 @@ public static class OrderErrors
     public static readonly Error ClientInactive = Error.Conflict(
         "Order.ClientInactive", "No se puede crear una orden para un cliente inactivo.");
 
+    public static readonly Error Expired = Error.Conflict(
+        "Order.Expired", $"La orden expiró porque han pasado más de {Order.ExpirationMinutes} minutos.");
+
+    public static Error TooManyPendingOrders(int max) => Error.Conflict(
+        "Order.TooManyPendingOrders", $"El cliente no puede tener más de {max} órdenes pendientes vigentes.");
+
     public static readonly Error NotModifiable = Error.Conflict(
         "Order.NotModifiable", "Solo se pueden modificar órdenes pendientes.");
 

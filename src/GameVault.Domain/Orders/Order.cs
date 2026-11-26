@@ -6,6 +6,9 @@ namespace GameVault.Domain.Orders;
 
 public sealed class Order : AuditableEntity<OrderId>
 {
+    public const int ExpirationMinutes = 30;
+    public const int MaxPendingPerClient = 3;
+
     private readonly List<OrderItem> _items;
     private readonly IReadOnlyList<OrderItem> _itemsView;
 
@@ -22,6 +25,9 @@ public sealed class Order : AuditableEntity<OrderId>
     public OrderStatus Status { get; private set; }
     public IReadOnlyList<OrderItem> Items => _itemsView;
     public decimal Total => _items.Sum(item => item.UnitPrice.Amount);
+
+    public bool IsExpired(DateTime nowUtc) =>
+        Status == OrderStatus.Pending && nowUtc - CreatedAt > TimeSpan.FromMinutes(ExpirationMinutes);
 
     public static Result<Order> Create(ClientId clientId) =>
         Result.Success(new Order(OrderId.New(), clientId, OrderStatus.Pending));

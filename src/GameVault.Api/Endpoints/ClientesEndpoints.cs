@@ -69,15 +69,15 @@ public sealed class ClientesEndpoints : IEndpoint
         .WithName("DesactivarCliente")
         .WithSummary("Desactiva lógicamente un cliente");
 
-        group.MapGet("/{id:guid}/biblioteca", async (Guid id, GetClientLibraryHandler handler, CancellationToken ct) =>
+        group.MapGet("/{id:guid}/biblioteca", async (Guid id, string? genero, GetClientLibraryHandler handler, CancellationToken ct) =>
         {
-            var result = await handler.HandleAsync(new ClientId(id), ct);
+            var result = await handler.HandleAsync(new ClientId(id), genero, ct);
             return result.IsSuccess
-                ? Result.Success(result.Value.Select(ToLicenseResponse).ToList()).ToHttpResult()
-                : Result.Failure<IReadOnlyList<LicenciaResponse>>(result.Error).ToHttpResult();
+                ? Result.Success(result.Value.Select(ToLicenseDetailResponse).ToList()).ToHttpResult()
+                : Result.Failure<IReadOnlyList<LicenciaDetalleResponse>>(result.Error).ToHttpResult();
         })
         .WithName("ObtenerBibliotecaCliente")
-        .WithSummary("Obtiene las licencias digitales del cliente");
+        .WithSummary("Obtiene las licencias digitales del cliente, opcionalmente filtradas por género");
     }
 
     private static ClienteResponse ToResponse(Client client) => new(
@@ -90,10 +90,9 @@ public sealed class ClientesEndpoints : IEndpoint
         ActualizadoEn: client.UpdatedAt,
         ActualizadoPor: client.UpdatedBy);
 
-    private static LicenciaResponse ToLicenseResponse(GameVault.Domain.Licenses.DigitalLicense license) => new(
-        Id: license.Id.Value,
-        OrdenId: license.OrderId.Value,
-        JuegoId: license.GameId.Value,
-        Clave: license.Key,
-        EmitidaEn: license.CreatedAt);
+    private static LicenciaDetalleResponse ToLicenseDetailResponse(GameVault.Application.Licenses.LicenseDetail license) => new(
+        license.Id,
+        license.Key,
+        license.IssuedAt,
+        new JuegoResumenResponse(license.Game.Id, license.Game.Title, license.Game.Genre));
 }

@@ -21,10 +21,13 @@ public sealed class Payment : AuditableEntity<PaymentId>
     public PaymentMethod Method { get; }
     public PaymentStatus Status { get; private set; }
 
-    public static Result<Payment> Create(Order order, decimal amount, PaymentMethod method)
+    public static Result<Payment> Create(Order order, decimal amount, PaymentMethod method, DateTime nowUtc)
     {
         if (order.Status != OrderStatus.Pending)
             return Result.Failure<Payment>(PaymentErrors.OrderNotPayable);
+
+        if (order.IsExpired(nowUtc))
+            return Result.Failure<Payment>(OrderErrors.Expired);
 
         if (amount != order.Total)
             return Result.Failure<Payment>(PaymentErrors.AmountMismatch(order.Total, amount));

@@ -1,9 +1,12 @@
 using GameVault.Domain.Clients;
-using GameVault.Domain.Licenses;
+using GameVault.Application.Licenses;
 
 namespace GameVault.Application.Abstractions.Persistence;
 
 public interface ILicenseRepository
 {
-    Task<IReadOnlyList<DigitalLicense>> GetByClientIdAsync(ClientId clientId, CancellationToken ct = default);
+    Task<IReadOnlyList<LicenseDetail>> GetLibraryAsync(
+        ClientId clientId,
+        string? genre,
+        CancellationToken ct = default);
 }

@@ -9,7 +9,8 @@ namespace GameVault.Application.Orders.CreateOrder;
 public sealed class CreateOrderHandler(
     IOrderRepository orderRepository,
     IClientRepository clientRepository,
-    IGameRepository gameRepository)
+    IGameRepository gameRepository,
+    TimeProvider clock)
 {
     public async Task<Result<Order>> HandleAsync(CreateOrderCommand command, CancellationToken ct = default)
     {
@@ -22,6 +23,11 @@ public sealed class CreateOrderHandler(
 
         if (!client.Active)
             return Result.Failure<Order>(OrderErrors.ClientInactive);
+
+        var sinceUtc = clock.GetUtcNow().UtcDateTime.AddMinutes(-Order.ExpirationMinutes);
+        var pendingCount = await orderRepository.CountPendingAsync(command.ClientId, sinceUtc, ct);
+        if (pendingCount >= Order.MaxPendingPerClient)
+            return Result.Failure<Order>(OrderErrors.TooManyPendingOrders(Order.MaxPendingPerClient));
 
         var orderResult = Order.Create(command.ClientId);
         var order = orderResult.Value;

@@ -3,6 +3,8 @@ using System.Globalization;
 using Dapper;
 using GameVault.Application.Abstractions;
 using GameVault.Application.Abstractions.Persistence;
+using GameVault.Application.Orders;
+using GameVault.Domain.Clients;
 using GameVault.Domain.Orders;
 using GameVault.Infrastructure.Persistence.Registros;
 
@@ -71,6 +73,72 @@ internal sealed class OrderRepository : RepositoryBase, IOrderRepository
         return records
             .Select(record => record.ToEntity(itemsByOrder.GetValueOrDefault(record.Id, [])))
             .ToList();
+    }
+
+    public async Task<int> CountPendingAsync(ClientId clientId, DateTime sinceUtc, CancellationToken ct = default)
+    {
+        const string sql = @"
+            SELECT COUNT(*)
+            FROM Orders
+            WHERE ClientId = @ClientId
+              AND Status = 0
+              AND CreatedAt > @SinceUtc;";
+
+        using var connection = ConnectionFactory.CreateConnection();
+        connection.Open();
+
+        return await connection.ExecuteScalarAsync<int>(
+            new CommandDefinition(
+                sql,
+                new
+                {
+                    ClientId = clientId.Value.ToString(),
+                    SinceUtc = FormatDate(sinceUtc)
+                },
+                cancellationToken: ct));
+    }
+
+    public async Task<IReadOnlyList<OrderSummary>> GetSummariesAsync(
+        ClientId? clientId,
+        OrderStatus? status,
+        CancellationToken ct = default)
+    {
+        const string sql = @"
+            SELECT
+                o.Id,
+                o.Status,
+                (SELECT COALESCE(SUM(UnitPrice), 0)
+                 FROM OrderItems
+                 WHERE OrderId = o.Id) AS Total,
+                (SELECT COUNT(*)
+                 FROM OrderItems
+                 WHERE OrderId = o.Id) AS ItemCount,
+                o.CreatedAt,
+                c.Id,
+                c.Name,
+                c.Email
+            FROM Orders o
+            INNER JOIN Clients c ON c.Id = o.ClientId
+            WHERE (@ClientId IS NULL OR o.ClientId = @ClientId)
+              AND (@Status IS NULL OR o.Status = @Status)
+            ORDER BY o.CreatedAt DESC;";
+
+        using var connection = ConnectionFactory.CreateConnection();
+        connection.Open();
+
+        var rows = await connection.QueryAsync<OrderSummaryFila, ClientSummaryFila, OrderSummary>(
+            new CommandDefinition(
+                sql,
+                new
+                {
+                    ClientId = clientId?.Value.ToString(),
+                    Status = status is null ? (int?)null : (int)status.Value
+                },
+                cancellationToken: ct),
+            OrderSummaryMapper.Map,
+            splitOn: "Id");
+
+        return rows.ToList();
     }
 
     public async Task AddAsync(Order order, CancellationToken ct = default)

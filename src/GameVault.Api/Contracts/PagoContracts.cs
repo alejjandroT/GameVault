@@ -11,9 +11,10 @@ public record PagoResponse(
     DateTime CreadoEn,
     string CreadoPor);
 
-public record LicenciaResponse(
+public record LicenciaDetalleResponse(
     Guid Id,
-    Guid OrdenId,
-    Guid JuegoId,
     string Clave,
-    DateTime EmitidaEn);
+    DateTime EmitidaEn,
+    JuegoResumenResponse Juego);
+
+public record JuegoResumenResponse(Guid Id, string Titulo, string Genero);
