@@ -1,0 +1,220 @@
+@host = http://localhost:5200
+@seedPublishedGameId = 22222222-2222-4222-8222-222222222222
+@seedDraftGameId = 11111111-1111-4111-8111-111111111111
+@seedInactiveClientId = bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb
+
+### 01. Listar juegos
+# Esperado: 200 OK
+# @name listGames
+GET {{host}}/api/juegos
+
+### 02. Crear juego (nace Draft)
+# Esperado: 201 Created
+# @name createGame
+POST {{host}}/api/juegos
+Content-Type: application/json
+
+{
+  "titulo": "GameVault HTTP Demo",
+  "genero": "Aventura",
+  "precio": 24.99
+}
+
+### 03. Crear el mismo juego (duplicado)
+# Esperado: 409 Conflict
+POST {{host}}/api/juegos
+Content-Type: application/json
+
+{
+  "titulo": "GameVault HTTP Demo",
+  "genero": "Aventura",
+  "precio": 24.99
+}
+
+### 04. Publicar el juego creado
+# Esperado: 200 OK
+POST {{host}}/api/juegos/{{createGame.response.body.$.id}}/publicar
+
+### 05. Actualizar el juego
+# Esperado: 204 No Content
+PUT {{host}}/api/juegos/{{createGame.response.body.$.id}}
+Content-Type: application/json
+
+{
+  "titulo": "GameVault HTTP Demo Actualizado",
+  "genero": "Aventura",
+  "precio": 29.99
+}
+
+### 06. Descontinuar el juego publicado
+# Esperado: 204 No Content
+DELETE {{host}}/api/juegos/{{createGame.response.body.$.id}}
+
+### 07. Crear cliente de prueba
+# Esperado: 201 Created
+# @name createClient
+POST {{host}}/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "GameVault HTTP Cliente",
+  "email": "gamevault-http@example.test"
+}
+
+### 08. Crear cliente con correo duplicado
+# Esperado: 409 Conflict
+POST {{host}}/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "GameVault HTTP Duplicado",
+  "email": "gamevault-http@example.test"
+}
+
+### 09. Crear cliente para probar el límite de pendientes
+# Esperado: 201 Created
+# @name createLimitClient
+POST {{host}}/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "GameVault HTTP Limite",
+  "email": "gamevault-http-limit@example.test"
+}
+
+### 10. Crear orden válida con juego Published de datos iniciales
+# Esperado: 201 Created
+# @name createPaidOrder
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 11. Crear orden con juego Draft
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createClient.response.body.$.id}}",
+  "juegoIds": ["{{seedDraftGameId}}"]
+}
+
+### 12. Crear orden con el mismo juego dos veces
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}", "{{seedPublishedGameId}}"]
+}
+
+### 13. Crear orden para cliente inactivo de datos iniciales
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{seedInactiveClientId}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 14. Pagar orden válida con tok_ok
+# Esperado: 201 Created
+POST {{host}}/api/ordenes/{{createPaidOrder.response.body.$.id}}/pagar
+Content-Type: application/json
+
+{
+  "metodo": "Card",
+  "token": "tok_ok"
+}
+
+### 15. Crear otra orden para probar tok_fail
+# Esperado: 201 Created
+# @name createRejectedOrder
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 16. Pagar con tok_fail
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes/{{createRejectedOrder.response.body.$.id}}/pagar
+Content-Type: application/json
+
+{
+  "metodo": "Card",
+  "token": "tok_fail"
+}
+
+### 17. Pagar por segunda vez la orden pagada
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes/{{createPaidOrder.response.body.$.id}}/pagar
+Content-Type: application/json
+
+{
+  "metodo": "Card",
+  "token": "tok_ok"
+}
+
+### 18. Consultar biblioteca sin filtro de género
+# Esperado: 200 OK
+GET {{host}}/api/clientes/{{createClient.response.body.$.id}}/biblioteca
+
+### 19. Consultar biblioteca filtrada por género
+# Esperado: 200 OK
+GET {{host}}/api/clientes/{{createClient.response.body.$.id}}/biblioteca?genero=Rol
+
+### 20. Listar órdenes por cliente y estado
+# Esperado: 200 OK
+GET {{host}}/api/ordenes?clienteId={{createClient.response.body.$.id}}&estado=Paid
+
+### 21. Crear pendiente 1 para el cliente del límite
+# Esperado: 201 Created
+# @name pendingLimitOrder1
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createLimitClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 22. Crear pendiente 2 para el cliente del límite
+# Esperado: 201 Created
+# @name pendingLimitOrder2
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createLimitClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 23. Crear pendiente 3 para el cliente del límite
+# Esperado: 201 Created
+# @name pendingLimitOrder3
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createLimitClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
+
+### 24. Crear pendiente 4 (supera el límite de tres)
+# Esperado: 409 Conflict
+POST {{host}}/api/ordenes
+Content-Type: application/json
+
+{
+  "clienteId": "{{createLimitClient.response.body.$.id}}",
+  "juegoIds": ["{{seedPublishedGameId}}"]
+}
